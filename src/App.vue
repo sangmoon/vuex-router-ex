@@ -39,7 +39,21 @@
       <v-toolbar-title>Application</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn text v-if="isLogin">welcome</v-btn>
+        <v-menu offset-y v-if="isLogin">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn text dark v-bind="attrs" v-on="on">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item router :to="{ name: 'Mypage' }">
+              <v-list-item-title>마이페이지</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="logout">
+              <v-list-item-title>로그아웃</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
         <v-btn text v-else router :to="{ name: 'Login' }">Login</v-btn>
       </v-toolbar-items>
     </v-app-bar>
@@ -56,7 +70,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   props: {
     source: String,
@@ -66,6 +80,9 @@ export default {
   }),
   computed: {
     ...mapState(["isLogin"]),
+  },
+  methods: {
+    ...mapActions(["logout"]),
   },
 };
 </script>
